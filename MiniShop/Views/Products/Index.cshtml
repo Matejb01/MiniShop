@@ -19,9 +19,6 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DescriptionHtml)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.ImagePath)
             </th>
             <th>
@@ -43,10 +40,12 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DescriptionHtml)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
+                @if (!string.IsNullOrEmpty(item.ImagePath))
+                   {
+                     <img src="@item.ImagePath"
+                          alt="Product image"
+                          style="max-height:80px; max-width:120px;" />
+                   }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsActive)
