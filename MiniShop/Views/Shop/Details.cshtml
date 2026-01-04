@@ -10,3 +10,18 @@
 <p class="mt-3">@Html.Raw(Model.DescriptionHtml)</p>
 <p><strong>Price:</strong> @Model.Price €</p>
 <p><strong>Category:</strong> @Model.Category?.Name</p>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <form asp-controller="Wishlist" asp-action="Add" method="post">
+        <input type="hidden" name="productId" value="@Model.Id" />
+        <button type="submit" class="btn btn-primary">Add to wishlist</button>
+    </form>
+}
+else
+{
+    <p>
+        <a asp-area="Identity" asp-page="/Account/Login">Login</a> to add to wishlist.
+    </p>
+}
+
