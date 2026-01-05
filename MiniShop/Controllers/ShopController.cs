@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MiniShop.Data;
 
@@ -13,12 +14,27 @@ public class ShopController : Controller
         _context = context;
     }
 
-    // GET: /Shop
-    public async Task<IActionResult> Index()
+    // GET: /Shop?categoryId=1
+    public async Task<IActionResult> Index(int? categoryId)
     {
-        var products = await _context.Products
+        // dropdown kategorija
+        var categories = await _context.Categories
+            .AsNoTracking()
+            .OrderBy(c => c.Name)
+            .ToListAsync();
+
+        ViewData["Categories"] = new SelectList(categories, "Id", "Name", categoryId);
+
+        // proizvodi (filtriranje)
+        var query = _context.Products
+            .AsNoTracking()
             .Include(p => p.Category)
-            .Where(p => p.IsActive)
+            .Where(p => p.IsActive);
+
+        if (categoryId.HasValue)
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+
+        var products = await query
             .OrderBy(p => p.Name)
             .ToListAsync();
 

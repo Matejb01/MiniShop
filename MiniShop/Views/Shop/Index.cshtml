@@ -6,6 +6,27 @@
 
 <h1>Shop</h1>
 
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    var categories = ViewData["Categories"] as SelectList;
+}
+
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-md-4">
+        <label class="form-label">Category</label>
+        <select name="categoryId" class="form-select" asp-items="categories">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-outline-secondary w-100" asp-controller="Shop" asp-action="Index">Reset</a>
+    </div>
+</form>
+
+
 <div class="row">
     @foreach (var item in Model)
     {
