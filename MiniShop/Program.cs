@@ -49,8 +49,16 @@ using (var scope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
     const string adminRole = "Admin";
-    const string adminEmail = "admin@minishop.local";
-    const string adminPassword = "Admin123!";
+
+    var adminSection = builder.Configuration.GetSection("AdminUser");
+    var adminEmail = adminSection["Email"];
+    var adminPassword = adminSection["Password"];
+
+    if (string.IsNullOrWhiteSpace(adminEmail) || string.IsNullOrWhiteSpace(adminPassword))
+    {
+        throw new Exception("Admin user credentials are not configured.");
+    }
+
 
     // 1) Role
     if (!await roleManager.RoleExistsAsync(adminRole))
